@@ -1,0 +1,22 @@
+.content {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  padding: 1em;
+  border: 1px solid white;
+  border-radius: 1em;
+}
+
+.form-input {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
