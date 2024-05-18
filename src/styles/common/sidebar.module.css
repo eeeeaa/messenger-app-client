@@ -1,0 +1,8 @@
+.container {
+  height: 100%;
+  width: 100%;
+  border: 1px solid white;
+
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+}

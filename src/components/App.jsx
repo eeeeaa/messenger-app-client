@@ -11,7 +11,7 @@ import Sidebar from "./common/sidebar";
 function Root() {
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
-  if (cookies.token === undefined) {
+  /*if (cookies.token === undefined) {
     return (
       <AppContext.Provider
         value={{
@@ -23,7 +23,7 @@ function Root() {
         <Login />
       </AppContext.Provider>
     );
-  }
+  }*/
 
   return (
     <AppContext.Provider
