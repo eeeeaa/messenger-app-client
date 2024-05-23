@@ -4,5 +4,12 @@
   border: 1px solid white;
 
   display: grid;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.logout-button {
+  align-self: center;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  border-color: transparent;
 }

@@ -6,78 +6,75 @@ import {
 } from "react-router-dom";
 import "../styles/App.css";
 import { useCookies } from "react-cookie";
-import { AppContext } from "../utils/contextProvider";
-import PropTypes from "prop-types";
+import { AppContext, SocketContext } from "../utils/contextProvider";
 
 import ErrorPage from "./common/error";
 import Home from "./routes/home";
 import Login from "./routes/login";
 import Sidebar from "./common/sidebar";
 import { useEffect } from "react";
+import { useState, useContext } from "react";
 
-Root.propTypes = {
-  cookies: PropTypes.object,
-  setCookie: PropTypes.func,
-  removeCookie: PropTypes.func,
-};
+import { createSocket } from "../domain/socket/socketUseCase";
 
-Auth.propTypes = {
-  cookies: PropTypes.object,
-  setCookie: PropTypes.func,
-  removeCookie: PropTypes.func,
-};
-
-function Auth({ cookies, setCookie, removeCookie }) {
-  return (
-    <AppContext.Provider
-      value={{
-        cookies,
-        setCookie,
-        removeCookie,
-      }}
-    >
-      <Outlet />
-    </AppContext.Provider>
-  );
+function Auth() {
+  return <Outlet />;
 }
 
-function Root({ cookies, setCookie, removeCookie }) {
+function Root() {
   const navigate = useNavigate();
+  const { cookies } = useContext(AppContext);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    if (cookies.token === undefined) {
+    if (cookies["token"] === undefined) {
       navigate("/auth/signup");
       return;
     }
-  });
+    setSocket(createSocket(cookies["token"]));
+  }, [navigate, cookies]);
 
   return (
-    <AppContext.Provider
-      value={{
-        cookies,
-        setCookie,
-        removeCookie,
-      }}
-    >
+    <SocketContext.Provider value={{ socket }}>
       <div className="content">
         <Sidebar />
         <Outlet />
       </div>
-    </AppContext.Provider>
+    </SocketContext.Provider>
   );
 }
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+
+  const getCurrentUser = () => {
+    return localStorage.getItem("username");
+  };
+
+  const setCurrentUser = (username) => {
+    localStorage.setItem("username", username);
+  };
+
+  const removeCurrentUser = () => {
+    localStorage.removeItem("username");
+  };
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
-        <Root
-          cookies={cookies}
-          setCookie={setCookie}
-          removeCookie={removeCookie}
-        />
+        <AppContext.Provider
+          value={{
+            cookies,
+            setCookie,
+            removeCookie,
+            getCurrentUser,
+            setCurrentUser,
+            removeCurrentUser,
+          }}
+        >
+          <Root />
+        </AppContext.Provider>
       ),
       errorElement: <ErrorPage />,
       children: [
@@ -90,11 +87,18 @@ function App() {
     {
       path: "/auth",
       element: (
-        <Auth
-          cookies={cookies}
-          setCookie={setCookie}
-          removeCookie={removeCookie}
-        />
+        <AppContext.Provider
+          value={{
+            cookies,
+            setCookie,
+            removeCookie,
+            getCurrentUser,
+            setCurrentUser,
+            removeCurrentUser,
+          }}
+        >
+          <Auth />
+        </AppContext.Provider>
       ),
       errorElement: <ErrorPage />,
       children: [

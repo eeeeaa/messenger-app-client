@@ -14,7 +14,7 @@ Login.propTypes = {
 
 export default function Login({ isSignup = false }) {
   const navigate = useNavigate();
-  const { setCookie } = useContext(AppContext);
+  const { setCookie, setCurrentUser } = useContext(AppContext);
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const [passwordConfirm, setPasswordConfirm] = useState();
@@ -48,6 +48,7 @@ export default function Login({ isSignup = false }) {
           sameSite: true,
           maxAge: 10800, //3 hours
         });
+        setCurrentUser(data.username);
         setLoading(false);
         navigate("/");
       } catch (error) {
