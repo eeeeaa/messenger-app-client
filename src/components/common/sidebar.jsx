@@ -1,10 +1,20 @@
 import styles from "../../styles/common/sidebar.module.css";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AppContext, SocketContext } from "../../utils/contextProvider";
+import LinesEllipsis from "react-lines-ellipsis";
+import PropTypes from "prop-types";
 
-function Misc() {
-  return <div>misc</div>;
+UserItem.propTypes = {
+  user: PropTypes.object,
+};
+
+Misc.propTypes = {
+  handleLogout: PropTypes.func,
+};
+
+function UserItem({ user }) {
+  return <li className={styles["users-item"]}>{user.username}</li>;
 }
 
 function OnlineList() {
@@ -15,31 +25,67 @@ function OnlineList() {
     if (socket !== null) {
       socket.on("usersResponse", (data) => {
         console.log("stuff");
-        setUsers(data);
+        setUsers(data.filter((val) => val.status === "Online"));
       });
     }
   }, [socket]);
 
   return (
-    <ul>
-      {users.length > 0 ? (
-        users.map((user) => {
-          return (
-            <li key={user._id}>
-              {user.username} ({user.status})
-            </li>
-          );
-        })
-      ) : (
-        <li>no users</li>
-      )}
-    </ul>
+    <div className={styles["section"]}>
+      <h2 className={styles["section-header"]}>Active Users</h2>
+      <ul className={styles["users-list"]}>
+        {users.length > 0 ? (
+          users.map((user) => {
+            return <UserItem key={user._id} user={user} />;
+          })
+        ) : (
+          <li>no users</li>
+        )}
+      </ul>
+    </div>
   );
 }
 
 function Profile() {
   const { getCurrentUser } = useContext(AppContext);
-  return <div>{getCurrentUser()}</div>;
+  return (
+    <div className={styles["profile-section"]}>
+      <h2 className={styles["profile-header"]}>Profile</h2>
+      <div>
+        <LinesEllipsis
+          className={styles["profile-name"]}
+          text={getCurrentUser()}
+          maxLine="1"
+          ellipsis="..."
+          trimRight
+          basedOn="letters"
+        />
+      </div>
+    </div>
+  );
+}
+
+function Misc({ handleLogout }) {
+  return (
+    <div className={styles["section"]}>
+      <h2 className={styles["section-header"]}>Settings</h2>
+      <ul className={styles["setting-list"]}>
+        <li>
+          <Link className={styles["setting-item"]} to="/rooms/create">
+            Create room
+          </Link>
+        </li>
+        <li>
+          <Link className={styles["setting-item"]} to="/setting">
+            Profile setting
+          </Link>
+        </li>
+        <li className={styles["setting-item"]} onClick={handleLogout}>
+          Logout
+        </li>
+      </ul>
+    </div>
+  );
 }
 
 export default function Sidebar() {
@@ -50,7 +96,6 @@ export default function Sidebar() {
   useEffect(() => {
     if (socket != null) {
       socket.emit("user online");
-      socket.emit("get users");
     }
   }, [socket]);
 
@@ -62,12 +107,9 @@ export default function Sidebar() {
   };
   return (
     <div className={styles["container"]}>
-      <button className={styles["logout-button"]} onClick={handleLogout}>
-        Logout
-      </button>
       <Profile />
       <OnlineList />
-      <Misc />
+      <Misc handleLogout={handleLogout} />
     </div>
   );
 }

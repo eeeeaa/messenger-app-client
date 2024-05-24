@@ -10,6 +10,8 @@ import { AppContext, SocketContext } from "../utils/contextProvider";
 
 import ErrorPage from "./common/error";
 import Home from "./routes/home";
+import Setting from "./routes/setting";
+import CreateRoom from "./routes/createRoom";
 import Login from "./routes/login";
 import Sidebar from "./common/sidebar";
 import { useEffect } from "react";
@@ -38,7 +40,9 @@ function Root() {
     <SocketContext.Provider value={{ socket }}>
       <div className="content">
         <Sidebar />
-        <Outlet />
+        <div className="container">
+          <Outlet />
+        </div>
       </div>
     </SocketContext.Provider>
   );
@@ -82,6 +86,14 @@ function App() {
           index: true,
           element: <Home />,
         },
+        {
+          path: "/setting",
+          element: <Setting />,
+        },
+        {
+          path: "/rooms/create",
+          element: <CreateRoom />,
+        },
       ],
     },
     {
@@ -111,6 +123,10 @@ function App() {
           element: <Login isSignup={true} />,
         },
       ],
+    },
+    {
+      path: "/error",
+      element: <ErrorPage />,
     },
   ]);
   return <RouterProvider router={router} />;

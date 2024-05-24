@@ -23,7 +23,7 @@ html {
 }
 
 body {
-  background-color: #18181b;
+  background-color: #0e7490;
 }
 
 .content {
@@ -35,4 +35,12 @@ body {
   display: grid;
   grid-template: 1fr / 1fr 3fr;
   padding: 1em;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: #94a3b8;
+  border-radius: 0 1em 1em 0;
+  color: black;
 }
