@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "../../styles/routes/home.module.css";
-import { AppContext } from "../../utils/contextProvider";
+import { AppContext, SocketContext } from "../../utils/contextProvider";
 import { useGetRooms } from "../../domain/room/roomUseCase";
 import ErrorPage from "../common/error";
 import LoadingPage from "../common/loadingPage";
@@ -15,12 +16,26 @@ Rooms.propTypes = {
 };
 
 function Room({ room }) {
-  return <div>{room.room_name}</div>;
+  const { socket } = useContext(SocketContext);
+  const navigate = useNavigate();
+  const handleJoinClick = () => {
+    navigate(`/rooms/${room._id}`);
+    socket.emit("join room", room._id);
+  };
+  return (
+    <div className={styles["room-item"]}>
+      <div>{room.room_name}</div>
+      <div className={styles["room-item-buttons"]}>
+        <button>Delete room</button>
+        <button onClick={handleJoinClick}>Join room</button>
+      </div>
+    </div>
+  );
 }
 
 function Rooms({ rooms }) {
   return (
-    <div>
+    <div className={styles["room-list"]}>
       {rooms.length > 0 ? (
         rooms.map((room) => {
           return <Room key={room._id} room={room} />;

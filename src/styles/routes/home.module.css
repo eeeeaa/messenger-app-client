@@ -1,0 +1,25 @@
+.room-list {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+
+.room-item {
+  width: 50%;
+  padding: 1em;
+  background-color: #1e293b;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.5em;
+}
+
+.room-item-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}

@@ -1,0 +1,82 @@
+.chat-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  height: 67vh;
+  padding: 1em;
+  overflow-y: scroll;
+}
+
+.chat-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 0 0 1em 0;
+  background-color: #334155;
+  height: 100px;
+}
+
+.chat-message {
+  max-height: 150px;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  border-color: transparent;
+  border-bottom: 1px solid #64748b;
+}
+
+.chat-message-header,
+.chat-message-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-author {
+  font-size: medium;
+  font-weight: 700;
+}
+
+.chat-date {
+  font-weight: 600;
+}
+
+.chat-message-content {
+  font-weight: 100;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+.message {
+  width: 80%;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+  padding: 15px;
+}
+.sendBtn {
+  width: 150px;
+  background-color: green;
+  padding: 10px;
+  border: none;
+  border-radius: 0.5em;
+  outline: none;
+  color: #eae3d2;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.sendBtn:hover {
+  background-color: rgb(129, 201, 129);
+}

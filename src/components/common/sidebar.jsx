@@ -19,27 +19,45 @@ function UserItem({ user }) {
 
 function OnlineList() {
   const { socket } = useContext(SocketContext);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
 
   useEffect(() => {
     if (socket !== null) {
       socket.on("usersResponse", (data) => {
-        console.log("stuff");
-        setUsers(data.filter((val) => val.status === "Online"));
+        setUsers(data.filter((user) => user.status === "Online"));
+      });
+
+      socket.on("onUserLeaves", (leaveUser) => {
+        if (users === null) return;
+        const filteredList = users.filter((user) => {
+          return user._id !== leaveUser._id;
+        });
+
+        setUsers(filteredList);
       });
     }
-  }, [socket]);
-
+  }, [socket, users]);
   return (
     <div className={styles["section"]}>
       <h2 className={styles["section-header"]}>Active Users</h2>
       <ul className={styles["users-list"]}>
-        {users.length > 0 ? (
-          users.map((user) => {
-            return <UserItem key={user._id} user={user} />;
-          })
+        {users === null ? (
+          <li>loading...</li>
         ) : (
-          <li>no users</li>
+          <>
+            {users !== null && users.length > 0 ? (
+              users.map((user) => {
+                return <UserItem key={user._id} user={user} />;
+              })
+            ) : (
+              <li>no users</li>
+            )}
+            {users !== null && users.length >= 10 ? (
+              <li>and more...</li>
+            ) : (
+              <></>
+            )}
+          </>
         )}
       </ul>
     </div>
@@ -70,6 +88,11 @@ function Misc({ handleLogout }) {
     <div className={styles["section"]}>
       <h2 className={styles["section-header"]}>Settings</h2>
       <ul className={styles["setting-list"]}>
+        <li>
+          <Link className={styles["setting-item"]} to="/">
+            Home
+          </Link>
+        </li>
         <li>
           <Link className={styles["setting-item"]} to="/rooms/create">
             Create room

@@ -13,6 +13,7 @@ import Home from "./routes/home";
 import Setting from "./routes/setting";
 import CreateRoom from "./routes/createRoom";
 import Login from "./routes/login";
+import ChatPage from "./routes/chatPage";
 import Sidebar from "./common/sidebar";
 import { useEffect } from "react";
 import { useState, useContext } from "react";
@@ -36,16 +37,20 @@ function Root() {
     setSocket(createSocket(cookies["token"]));
   }, [navigate, cookies]);
 
-  return (
-    <SocketContext.Provider value={{ socket }}>
-      <div className="content">
-        <Sidebar />
-        <div className="container">
-          <Outlet />
+  if (cookies["token"] === undefined) {
+    return <div></div>;
+  } else {
+    return (
+      <SocketContext.Provider value={{ socket }}>
+        <div className="content">
+          <Sidebar />
+          <div className="container">
+            <Outlet />
+          </div>
         </div>
-      </div>
-    </SocketContext.Provider>
-  );
+      </SocketContext.Provider>
+    );
+  }
 }
 
 function App() {
@@ -93,6 +98,10 @@ function App() {
         {
           path: "/rooms/create",
           element: <CreateRoom />,
+        },
+        {
+          path: "/rooms/:roomId",
+          element: <ChatPage />,
         },
       ],
     },
