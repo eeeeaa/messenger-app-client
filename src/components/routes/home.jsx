@@ -16,11 +16,9 @@ Rooms.propTypes = {
 };
 
 function Room({ room }) {
-  const { socket } = useContext(SocketContext);
   const navigate = useNavigate();
   const handleJoinClick = () => {
     navigate(`/rooms/${room._id}`);
-    socket.emit("join room", room._id);
   };
   return (
     <div className={styles["room-item"]}>

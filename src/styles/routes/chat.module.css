@@ -24,19 +24,29 @@
   height: 100px;
 }
 
-.chat-message {
+.chat-message,
+.last-message {
   max-height: 150px;
   display: flex;
   flex-direction: column;
   padding: 1em;
   border-color: transparent;
+}
+
+.chat-message {
   border-bottom: 1px solid #64748b;
 }
 
-.chat-message-header,
 .chat-message-footer {
   display: flex;
   justify-content: space-between;
+}
+
+.chat-message-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: start;
+  gap: 0.5em;
 }
 
 .chat-author {
@@ -50,6 +60,21 @@
 
 .chat-message-content {
   font-weight: 100;
+}
+
+.offline-circle,
+.online-circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.offline-circle {
+  background-color: grey;
+}
+
+.online-circle {
+  background-color: #16a34a;
 }
 
 .form {

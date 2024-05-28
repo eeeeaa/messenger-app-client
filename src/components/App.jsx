@@ -35,7 +35,7 @@ function Root() {
       return;
     }
     setSocket(createSocket(cookies["token"]));
-  }, [navigate, cookies]);
+  }, []);
 
   if (cookies["token"] === undefined) {
     return <div></div>;

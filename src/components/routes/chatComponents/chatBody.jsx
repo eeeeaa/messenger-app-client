@@ -1,9 +1,10 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import styles from "../../../styles/routes/chat.module.css";
 import LinesEllipsis from "react-lines-ellipsis";
 import PropTypes from "prop-types";
 
 import LoadingPage from "../../common/loadingPage";
+import { AppContext } from "../../../utils/contextProvider";
 
 ChatMessage.propTypes = {
   message: PropTypes.object,
@@ -13,22 +14,27 @@ ChatBody.propTypes = {
   socket: PropTypes.object,
 };
 
-function ChatMessage({ message }) {
+function ChatMessage({ message, isLast }) {
+  const { getCurrentUser } = useContext(AppContext);
+  const name =
+    message.user.display_name === undefined
+      ? message.user.username
+      : message.user.display_name;
+
+  const isUser = message.user.username === getCurrentUser();
+
   return (
-    <div className={styles["chat-message"]}>
+    <div className={isLast ? styles["last-message"] : styles["chat-message"]}>
       <div className={styles["chat-message-header"]}>
         <LinesEllipsis
           className={styles["chat-author"]}
-          text={
-            message.user.display_name === undefined
-              ? message.user.username
-              : message.user.display_name
-          }
+          text={name}
           maxLine="1"
           ellipsis="..."
           trimRight
           basedOn="letters"
         />
+        {isUser ? <div>(you)</div> : <></>}
       </div>
       <div className={styles["chat-message-content"]}>
         <LinesEllipsis
@@ -65,19 +71,21 @@ export default function ChatBody({ socket }) {
   }, [messages]);
 
   useEffect(() => {
-    socket.on("onJoinRoom", (user) => {
-      setLoading(false);
-      //join
-    });
+    if (socket !== null) {
+      socket.on("onJoinRoom", (user) => {
+        setLoading(false);
+        //join
+      });
 
-    socket.on("onLeaveRoom", (user) => {
-      //leave
-    });
+      socket.on("onLeaveRoom", (user) => {
+        //leave
+      });
 
-    socket.on("messageResponse", (data) => {
-      setLoading(false);
-      setMessages(data);
-    });
+      socket.on("messageResponse", (data) => {
+        setLoading(false);
+        setMessages(data);
+      });
+    }
   }, [socket]);
 
   if (loading)
@@ -90,8 +98,11 @@ export default function ChatBody({ socket }) {
   return (
     <div className={styles["chat-body"]}>
       {messages.length > 0 ? (
-        messages.map((message) => {
-          return <ChatMessage key={message._id} message={message} />;
+        messages.map((message, index) => {
+          const isLast = index === messages.length - 1;
+          return (
+            <ChatMessage key={message._id} message={message} isLast={isLast} />
+          );
         })
       ) : (
         <div>no messages</div>

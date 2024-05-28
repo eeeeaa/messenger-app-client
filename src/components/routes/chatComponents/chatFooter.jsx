@@ -9,11 +9,12 @@ ChatFooter.propTypes = {
 
 export default function ChatFooter({ socket, roomId }) {
   const [message, setMessage] = useState("");
+
   const handleTyping = () => {};
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (message.trim()) {
+    if (message.trim() && socket !== null) {
       socket.emit("send message", { roomid: roomId, message: message });
     }
     setMessage("");
