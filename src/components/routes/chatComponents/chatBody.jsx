@@ -8,6 +8,7 @@ import { AppContext } from "../../../utils/contextProvider";
 
 ChatMessage.propTypes = {
   message: PropTypes.object,
+  isLast: PropTypes.bool,
 };
 
 ChatBody.propTypes = {

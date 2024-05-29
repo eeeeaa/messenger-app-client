@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/routes/home.module.css";
-import { AppContext, SocketContext } from "../../utils/contextProvider";
+import { AppContext } from "../../utils/contextProvider";
 import { useGetRooms } from "../../domain/room/roomUseCase";
 import ErrorPage from "../common/error";
 import LoadingPage from "../common/loadingPage";

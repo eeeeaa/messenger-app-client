@@ -11,7 +11,7 @@
   gap: 1em;
   height: 67vh;
   padding: 1em;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .chat-footer {
