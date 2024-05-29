@@ -1,10 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AppContext } from "../../utils/contextProvider";
+import { AppContext, SocketContext } from "../../utils/contextProvider";
 import { deleteRoom } from "../../domain/room/roomUseCase";
 
 export default function DeleteRoom() {
   const navigate = useNavigate();
+  const { socket } = useContext(SocketContext);
   const { cookies } = useContext(AppContext);
   const { roomId } = useParams();
 
@@ -14,6 +15,9 @@ export default function DeleteRoom() {
       if (error) {
         navigate("/error");
       } else {
+        if (socket !== null) {
+          socket.emit("kick all users from room", roomId);
+        }
         navigate("/");
       }
     } catch (e) {
