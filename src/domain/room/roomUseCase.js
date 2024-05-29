@@ -57,3 +57,30 @@ export const postRoom = async (token, { room_name }) => {
 
   return { room, error };
 };
+
+export const deleteRoom = async (token, roomId) => {
+  let room = null;
+  let error = null;
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  await fetch(`${roomsUri}/${roomId}`, {
+    method: "DELETE",
+    mode: "cors",
+    headers: headers,
+  })
+    .then((response) => {
+      if (response.status >= 400) {
+        throw new Error("server error");
+      }
+      return response.json();
+    })
+    .then((response) => {
+      room = response.deletedRoom;
+    })
+    .catch((err) => (error = err));
+
+  return { room, error };
+};

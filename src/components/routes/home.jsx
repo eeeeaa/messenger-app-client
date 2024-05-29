@@ -20,11 +20,14 @@ function Room({ room }) {
   const handleJoinClick = () => {
     navigate(`/rooms/${room._id}`);
   };
+  const handleDeleteClick = () => {
+    navigate(`/rooms/${room._id}/delete`);
+  };
   return (
     <div className={styles["room-item"]}>
       <div>{room.room_name}</div>
       <div className={styles["room-item-buttons"]}>
-        <button>Delete room</button>
+        <button onClick={handleDeleteClick}>Delete room</button>
         <button onClick={handleJoinClick}>Join room</button>
       </div>
     </div>

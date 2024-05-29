@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import { useState, useContext } from "react";
 
 import { createSocket } from "../domain/socket/socketUseCase";
+import DeleteRoom from "./routes/deleteRoom";
 
 function Auth() {
   return <Outlet />;
@@ -102,6 +103,10 @@ function App() {
         {
           path: "/rooms/:roomId",
           element: <ChatPage />,
+        },
+        {
+          path: "/rooms/:roomId/delete",
+          element: <DeleteRoom />,
         },
       ],
     },
