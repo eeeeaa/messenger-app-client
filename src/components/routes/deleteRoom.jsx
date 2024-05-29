@@ -1,7 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext, SocketContext } from "../../utils/contextProvider";
 import { deleteRoom } from "../../domain/room/roomUseCase";
+
+import ErrorPage from "../common/error";
+import LoadingPage from "../common/loadingPage";
 
 export default function DeleteRoom() {
   const navigate = useNavigate();
@@ -9,11 +12,16 @@ export default function DeleteRoom() {
   const { cookies } = useContext(AppContext);
   const { roomId } = useParams();
 
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState(null);
+
   const handleDeleteClick = async () => {
     try {
+      setLoading(true);
       const { room, error } = await deleteRoom(cookies["token"], roomId);
+      setLoading(false);
       if (error) {
-        navigate("/error");
+        setErr(error);
       } else {
         if (socket !== null) {
           socket.emit("kick all users from room", roomId);
@@ -21,13 +29,17 @@ export default function DeleteRoom() {
         navigate("/");
       }
     } catch (e) {
-      navigate("/error");
+      setErr(e);
     }
   };
 
   const handleGoBack = () => {
     navigate("/");
   };
+
+  if (err) return <ErrorPage errorMsg={err.message} />;
+
+  if (loading) return <LoadingPage />;
 
   return (
     <div>
