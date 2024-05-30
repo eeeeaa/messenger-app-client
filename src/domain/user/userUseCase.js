@@ -13,9 +13,11 @@ export const getMyProfile = async (token) => {
     mode: "cors",
     headers: headers,
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status >= 400) {
-        throw new Error("server error");
+        console.log(response);
+        const json = await response.json();
+        throw new Error(json.message);
       }
       return response.json();
     })
@@ -50,9 +52,11 @@ export const updateProfile = async (
       status: "Online",
     }),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status >= 400) {
-        throw new Error("server error");
+        console.log(response);
+        const json = await response.json();
+        throw new Error(json.message);
       }
       return response.json();
     })

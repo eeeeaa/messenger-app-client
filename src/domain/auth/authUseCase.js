@@ -11,7 +11,9 @@ export const loginUseCase = async (username, password) => {
     body: JSON.stringify({ username, password }),
   });
   if (response.status >= 400) {
-    throw new Error("server error");
+    console.log(response);
+    const json = await response.json();
+    throw new Error(json.message);
   }
 
   const jsonResponse = await response.json();
@@ -28,7 +30,9 @@ export const signupUseCase = async (username, password, password_confirm) => {
     body: JSON.stringify({ username, password, password_confirm }),
   });
   if (response.status >= 400) {
-    throw new Error("server error");
+    console.log(response);
+    const json = await response.json();
+    throw new Error(json.message);
   }
 
   const jsonResponse = await response.json();

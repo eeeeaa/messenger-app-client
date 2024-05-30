@@ -14,9 +14,11 @@ export const useGetRooms = (token) => {
       mode: "cors",
       headers: headers,
     })
-      .then((response) => {
+      .then(async (response) => {
         if (response.status >= 400) {
-          throw new Error("server error");
+          console.log(response);
+          const json = await response.json();
+          throw new Error(json.message);
         }
         return response.json();
       })
@@ -44,9 +46,11 @@ export const postRoom = async (token, { room_name }) => {
     headers: headers,
     body: JSON.stringify({ room_name: room_name }),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status >= 400) {
-        throw new Error("server error");
+        console.log(response);
+        const json = await response.json();
+        throw new Error(json.message);
       }
       return response.json();
     })
@@ -71,9 +75,11 @@ export const deleteRoom = async (token, roomId) => {
     mode: "cors",
     headers: headers,
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status >= 400) {
-        throw new Error("server error");
+        console.log(response);
+        const json = await response.json();
+        throw new Error(json.message);
       }
       return response.json();
     })
