@@ -14,7 +14,12 @@ Misc.propTypes = {
 };
 
 function UserItem({ user }) {
-  return <li className={styles["users-item"]}>{user.username}</li>;
+  return (
+    <li className={styles["users-item"]}>
+      {user.display_name !== undefined ? user.display_name : user.username} (
+      {user.status})
+    </li>
+  );
 }
 
 function OnlineList() {
@@ -24,22 +29,13 @@ function OnlineList() {
   useEffect(() => {
     if (socket !== null) {
       socket.on("usersResponse", (data) => {
-        setUsers(data.filter((user) => user.status === "Online"));
-      });
-
-      socket.on("onUserLeaves", (leaveUser) => {
-        if (users === null) return;
-        const filteredList = users.filter((user) => {
-          return user._id !== leaveUser._id;
-        });
-
-        setUsers(filteredList);
+        setUsers(data);
       });
     }
   }, [socket, users]);
   return (
     <div className={styles["section"]}>
-      <h2 className={styles["section-header"]}>Active Users</h2>
+      <h2 className={styles["section-header"]}>Users</h2>
       <ul className={styles["users-list"]}>
         {users === null ? (
           <li>loading...</li>
@@ -66,13 +62,14 @@ function OnlineList() {
 
 function Profile() {
   const { getCurrentUser } = useContext(AppContext);
+  const user = getCurrentUser();
   return (
     <div className={styles["profile-section"]}>
       <h2 className={styles["profile-header"]}>Profile</h2>
       <div>
         <LinesEllipsis
           className={styles["profile-name"]}
-          text={getCurrentUser()}
+          text={user.display_name.trim() ? user.display_name : user.username}
           maxLine="1"
           ellipsis="..."
           trimRight

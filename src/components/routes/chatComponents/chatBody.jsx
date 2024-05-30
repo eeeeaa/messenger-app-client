@@ -22,7 +22,7 @@ function ChatMessage({ message, isLast }) {
       ? message.user.username
       : message.user.display_name;
 
-  const isUser = message.user.username === getCurrentUser();
+  const isUser = message.user._id === getCurrentUser().user_id;
 
   return (
     <div className={isLast ? styles["last-message"] : styles["chat-message"]}>

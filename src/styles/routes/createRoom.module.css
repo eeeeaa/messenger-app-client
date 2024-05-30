@@ -24,14 +24,6 @@
   align-items: center;
 }
 
-.text-input {
-  appearance: none;
-  border-color: transparent;
-  border-radius: 0.5em;
-  background-color: #cbd5e1;
-  color: black;
-}
-
 .create-room-button {
   padding: 0.5em 1em;
   border-radius: 0.5em;

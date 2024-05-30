@@ -5,6 +5,7 @@ import { AppContext } from "../../utils/contextProvider";
 import PropTypes from "prop-types";
 
 import { loginUseCase, signupUseCase } from "../../domain/auth/authUseCase";
+import { getMyProfile } from "../../domain/user/userUseCase";
 import ErrorPage from "../common/error";
 import LoadingPage from "../common/loadingPage";
 
@@ -42,13 +43,24 @@ export default function Login({ isSignup = false }) {
       try {
         setLoading(true);
         const data = await loginUseCase(username, password);
+        const { user, error } = await getMyProfile(data.token);
+
+        if (error) {
+          setError(error);
+        }
+
         setCookie("token", data.token, {
           secure: true,
           httpOnly: false,
           sameSite: true,
           maxAge: 10800, //3 hours
         });
-        setCurrentUser(data.username);
+
+        setCurrentUser({
+          username: user.username,
+          display_name: user.display_name ? user.display_name : "",
+          user_id: user._id,
+        });
         setLoading(false);
         navigate("/");
       } catch (error) {

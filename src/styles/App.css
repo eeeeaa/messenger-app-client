@@ -44,3 +44,12 @@ body {
   border-radius: 0 1em 1em 0;
   color: black;
 }
+
+input[type="text"],
+input[type="password"] {
+  appearance: none;
+  border-color: transparent;
+  border-radius: 0.5em;
+  background-color: #cbd5e1;
+  color: black;
+}

@@ -27,7 +27,7 @@ function Auth() {
 
 function Root() {
   const navigate = useNavigate();
-  const { cookies } = useContext(AppContext);
+  const { cookies, setCurrentUser, getCurrentUser } = useContext(AppContext);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -37,6 +37,22 @@ function Root() {
     }
     setSocket(createSocket(cookies["token"]));
   }, []);
+
+  useEffect(() => {
+    if (socket != null) {
+      socket.on("profileResponse", (user) => {
+        const currentUser = getCurrentUser();
+
+        if (currentUser.user_id === user._id) {
+          setCurrentUser({
+            username: user.username,
+            display_name: user.display_name,
+            user_id: user._id,
+          });
+        }
+      });
+    }
+  }, [socket, setCurrentUser, getCurrentUser]);
 
   if (cookies["token"] === undefined) {
     return <div></div>;
@@ -56,17 +72,36 @@ function Root() {
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [userId, setUserId] = useState("");
 
   const getCurrentUser = () => {
-    return localStorage.getItem("username");
+    return {
+      username: username,
+      display_name: displayName,
+      user_id: userId,
+    };
   };
 
-  const setCurrentUser = (username) => {
+  const setCurrentUser = ({ username, display_name, user_id }) => {
     localStorage.setItem("username", username);
+    localStorage.setItem("display_name", display_name);
+    localStorage.setItem("user_id", user_id);
+
+    setUsername(localStorage.getItem("username"));
+    setDisplayName(localStorage.getItem("display_name"));
+    setUserId(localStorage.getItem("user_id"));
   };
 
   const removeCurrentUser = () => {
     localStorage.removeItem("username");
+    localStorage.removeItem("display_name");
+    localStorage.removeItem("user_id");
+
+    setUsername("");
+    setDisplayName("");
+    setUserId("");
   };
 
   const router = createBrowserRouter([

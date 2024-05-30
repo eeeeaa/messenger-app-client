@@ -13,7 +13,6 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (socket != null) {
-      console.log("join room");
       socket.emit("join room", roomId);
 
       socket.on("onKicked", () => {
@@ -24,7 +23,6 @@ export default function ChatPage() {
 
     return () => {
       if (socket != null) {
-        console.log("leaves room");
         socket.emit("leaves room", roomId);
       }
     };
