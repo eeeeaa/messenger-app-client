@@ -16,6 +16,7 @@ export default function Setting() {
   const { getCurrentUser, cookies, removeCookie, removeCurrentUser } =
     useContext(AppContext);
   const { socket } = useContext(SocketContext);
+  const [isButtonEnabled, setIsButtonEnabled] = useState(true);
   const passwordConfirmElement = useRef();
 
   const [loading, setLoading] = useState(false);
@@ -48,6 +49,19 @@ export default function Setting() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCurrentUser, passwordConfirm]);
 
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    if (
+      username !== currentUser.username ||
+      displayName !== currentUser.display_name ||
+      (password.length > 0 && password.trim() === passwordConfirm.trim())
+    ) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [username, displayName, password, passwordConfirm, getCurrentUser]);
+
   const handleLogout = () => {
     if (socket != null) {
       socket.emit("user offline");
@@ -59,19 +73,30 @@ export default function Setting() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const currentUser = getCurrentUser();
 
     try {
       setLoading(true);
       const { user, error } = await updateProfile(
         {
-          username: username.trim() ? username : undefined,
-          display_name: displayName.trim() ? displayName : undefined,
+          username:
+            username.trim() && username !== currentUser.username
+              ? username
+              : undefined,
+          display_name:
+            displayName.trim() && displayName !== currentUser.display_name
+              ? displayName
+              : undefined,
           password: password.trim() ? password : undefined,
         },
         cookies["token"],
         getCurrentUser().user_id
       );
       setLoading(false);
+      if (error) {
+        setErr(error);
+        return;
+      }
       if (socket != null) {
         socket.emit("update profile", user);
         socket.emit("user refresh");
@@ -141,7 +166,11 @@ export default function Setting() {
             />
           </div>
         </fieldset>
-        <button className={styles["submit-button"]} type="submit">
+        <button
+          className={styles["submit-button"]}
+          type="submit"
+          disabled={!isButtonEnabled}
+        >
           Apply changes
         </button>
       </form>
