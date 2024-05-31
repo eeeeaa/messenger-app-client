@@ -4,7 +4,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #1e293b;
+  background-color: #3eecac;
+  background-image: linear-gradient(19deg, #3eecac 0%, #ee74e1 100%);
 }
 
 .login-form {
@@ -14,8 +15,15 @@
   justify-content: center;
   gap: 1em;
   padding: 1em;
-  border: 1px solid white;
+
   border-radius: 1em;
+  background-color: #ff3cac;
+  background-image: linear-gradient(
+    225deg,
+    #ff3cac 0%,
+    #784ba0 50%,
+    #2b86c5 100%
+  );
 }
 
 .login-header {

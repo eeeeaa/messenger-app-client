@@ -6,6 +6,7 @@ import { useGetRooms } from "../../domain/room/roomUseCase";
 import ErrorPage from "../common/error";
 import LoadingPage from "../common/loadingPage";
 import PropTypes from "prop-types";
+import { IoChatbubblesOutline } from "react-icons/io5";
 
 Room.propTypes = {
   room: PropTypes.object,
@@ -25,10 +26,15 @@ function Room({ room }) {
   };
   return (
     <div className={styles["room-item"]}>
-      <div>{room.room_name}</div>
+      <IoChatbubblesOutline className={styles["chat-icon"]} />
+      <div className={styles["room-title"]}>Room: {room.room_name}</div>
       <div className={styles["room-item-buttons"]}>
-        <button onClick={handleDeleteClick}>Delete room</button>
-        <button onClick={handleJoinClick}>Join room</button>
+        <button className={styles["delete-button"]} onClick={handleDeleteClick}>
+          Delete room
+        </button>
+        <button className={styles["join-button"]} onClick={handleJoinClick}>
+          Join room
+        </button>
       </div>
     </div>
   );
