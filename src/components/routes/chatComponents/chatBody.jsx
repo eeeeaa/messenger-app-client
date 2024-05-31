@@ -50,7 +50,13 @@ function ChatMessage({ message, isLast }) {
       <div className={styles["chat-message=footer"]}>
         <LinesEllipsis
           className={styles["chat-date"]}
-          text={message.created_at}
+          text={new Date(message.created_at).toLocaleDateString([], {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+          })}
           maxLine="1"
           ellipsis="..."
           trimRight

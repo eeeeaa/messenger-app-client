@@ -69,8 +69,18 @@ export default function Login({ isSignup = false }) {
     }
   };
 
-  if (error) return <ErrorPage errorMsg={error.message} />;
-  if (loading) return <LoadingPage />;
+  if (error)
+    return (
+      <div className={styles["content"]}>
+        <ErrorPage errorMsg={error.message} />
+      </div>
+    );
+  if (loading)
+    return (
+      <div className={styles["content"]}>
+        <LoadingPage />
+      </div>
+    );
 
   return (
     <div className={styles["content"]}>

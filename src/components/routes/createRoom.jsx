@@ -5,25 +5,40 @@ import { useNavigate } from "react-router-dom";
 
 import { postRoom } from "../../domain/room/roomUseCase";
 
+import ErrorPage from "../common/error";
+import LoadingPage from "../common/loadingPage";
+
 export default function CreateRoom() {
   const navigate = useNavigate();
   const { cookies } = useContext(AppContext);
   const [roomName, setRoomName] = useState("");
+  const [isButtonEnabled, setIsButtonEnabled] = useState(true);
+
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsButtonEnabled(false);
+    setLoading(true);
     try {
       const { room, error } = await postRoom(cookies["token"], {
         room_name: roomName,
       });
       if (error) {
-        navigate("/error");
+        setErr(error);
       } else {
         navigate("/");
       }
+      setLoading(false);
     } catch (e) {
-      navigate("/error");
+      setErr(e);
     }
   };
+
+  if (err) return <ErrorPage errorMsg={err.message} />;
+
+  if (loading) return <LoadingPage />;
 
   return (
     <div className={styles["container"]}>
@@ -39,7 +54,11 @@ export default function CreateRoom() {
             required
           />
         </div>
-        <button className={styles["create-room-button"]} type="submit">
+        <button
+          className={styles["create-room-button"]}
+          type="submit"
+          disabled={!isButtonEnabled}
+        >
           Create room
         </button>
       </form>

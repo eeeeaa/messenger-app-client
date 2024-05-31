@@ -15,7 +15,10 @@ export default function DeleteRoom() {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
 
+  const [isButtonEnabled, setIsButtonEnabled] = useState(true);
+
   const handleDeleteClick = async () => {
+    setIsButtonEnabled(false);
     try {
       setLoading(true);
       const { room, error } = await deleteRoom(cookies["token"], roomId);
@@ -49,7 +52,9 @@ export default function DeleteRoom() {
         with this room will also be deleted!
       </div>
       <div>
-        <button onClick={handleGoBack}>Go back</button>
+        <button onClick={handleGoBack} disabled={!isButtonEnabled}>
+          Go back
+        </button>
         <button onClick={handleDeleteClick}>Delete room</button>
       </div>
     </div>

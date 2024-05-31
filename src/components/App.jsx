@@ -31,11 +31,32 @@ function Root() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    const handleTabClose = (event) => {
+      event.preventDefault();
+
+      console.log("beforeunload event triggered");
+
+      if (socket != null) {
+        socket.emit("user offline");
+      }
+
+      return (event.returnValue = "Are you sure you want to exit?");
+    };
+
+    window.addEventListener("beforeunload", handleTabClose);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, [socket]);
+
+  useEffect(() => {
     if (cookies["token"] === undefined) {
       navigate("/auth/signup");
       return;
     }
     setSocket(createSocket(cookies["token"]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -62,8 +83,24 @@ function Root() {
         <div className="content">
           <Sidebar />
           <div className="container">
-            <Outlet />
+            <div className="box">
+              <Outlet />
+            </div>
           </div>
+        </div>
+        <div className="area">
+          <ul className="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
         </div>
       </SocketContext.Provider>
     );
