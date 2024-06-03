@@ -109,9 +109,11 @@ function Root() {
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-  const [username, setUsername] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [userId, setUserId] = useState("");
+  const [username, setUsername] = useState(localStorage.getItem("username"));
+  const [displayName, setDisplayName] = useState(
+    localStorage.getItem("display_name")
+  );
+  const [userId, setUserId] = useState(localStorage.getItem("user_id"));
 
   const getCurrentUser = () => {
     return {

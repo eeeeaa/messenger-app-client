@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { SocketContext } from "../../utils/contextProvider";
 import styles from "../../styles/routes/chat.module.css";
 
@@ -9,6 +9,7 @@ import ChatFooter from "./chatComponents/chatFooter";
 export default function ChatPage() {
   const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
+  const [searchParams, setSearchParams] = useSearchParams();
   const { roomId } = useParams();
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function ChatPage() {
 
   return (
     <div className={styles["chat-page"]}>
-      <ChatBody socket={socket} />
+      <ChatBody socket={socket} roomName={searchParams.get("name")} />
       <ChatFooter socket={socket} roomId={roomId} />
     </div>
   );

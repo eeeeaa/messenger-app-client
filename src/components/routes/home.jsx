@@ -19,10 +19,10 @@ Rooms.propTypes = {
 function Room({ room }) {
   const navigate = useNavigate();
   const handleJoinClick = () => {
-    navigate(`/rooms/${room._id}`);
+    navigate(`/rooms/${room._id}?name=${room.room_name}`);
   };
   const handleDeleteClick = () => {
-    navigate(`/rooms/${room._id}/delete`);
+    navigate(`/rooms/${room._id}/delete?name=${room.room_name}`);
   };
   return (
     <div className={styles["room-item"]}>

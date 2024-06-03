@@ -5,6 +5,9 @@ import { AppContext, SocketContext } from "../../utils/contextProvider";
 import LinesEllipsis from "react-lines-ellipsis";
 import PropTypes from "prop-types";
 
+import { FaRegUserCircle } from "react-icons/fa";
+import { MdMiscellaneousServices } from "react-icons/md";
+
 UserItem.propTypes = {
   user: PropTypes.object,
 };
@@ -35,7 +38,10 @@ function OnlineList() {
   }, [socket, users]);
   return (
     <div className={styles["section"]}>
-      <h2 className={styles["section-header"]}>Users</h2>
+      <div className={styles["section-header"]}>
+        <FaRegUserCircle className={styles["section-icon"]} />
+        <h2 className={styles["section-title"]}>Users</h2>
+      </div>
       <ul className={styles["users-list"]}>
         {users === null ? (
           <li>loading...</li>
@@ -83,7 +89,10 @@ function Profile() {
 function Misc({ handleLogout }) {
   return (
     <div className={styles["section"]}>
-      <h2 className={styles["section-header"]}>Settings</h2>
+      <div className={styles["section-header"]}>
+        <MdMiscellaneousServices className={styles["section-icon"]} />
+        <h2 className={styles["section-title"]}>Others</h2>
+      </div>
       <ul className={styles["setting-list"]}>
         <li>
           <Link className={styles["setting-item"]} to="/">

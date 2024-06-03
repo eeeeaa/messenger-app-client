@@ -8,6 +8,8 @@ import { postRoom } from "../../domain/room/roomUseCase";
 import ErrorPage from "../common/error";
 import LoadingPage from "../common/loadingPage";
 
+import { IoCreateOutline } from "react-icons/io5";
+
 export default function CreateRoom() {
   const navigate = useNavigate();
   const { cookies } = useContext(AppContext);
@@ -43,6 +45,10 @@ export default function CreateRoom() {
   return (
     <div className={styles["container"]}>
       <form onSubmit={handleSubmit} className={styles["card"]}>
+        <div className={styles["header"]}>
+          <IoCreateOutline className={styles["icon"]} />
+          <h2 className={styles["title"]}>Create room</h2>
+        </div>
         <div className={styles["input-field"]}>
           <label htmlFor="room_name">Room name:</label>
           <input

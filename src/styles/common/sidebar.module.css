@@ -26,11 +26,10 @@
   padding: 1em;
 }
 
-.section-header,
+.section-title,
 .profile-header {
   font-size: x-large;
   font-weight: 100;
-
   margin: 0;
 }
 
@@ -43,6 +42,19 @@
 .section-header {
   border-bottom: 1px solid #94a3b8;
   margin-bottom: 1em;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  align-items: center;
+}
+
+.section-icon {
+  font-size: 24px;
+}
+
+.section-title {
+  padding: 0;
+  margin: 0;
 }
 
 .setting-item {

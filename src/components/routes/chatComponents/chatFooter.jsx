@@ -9,6 +9,7 @@ ChatFooter.propTypes = {
 
 export default function ChatFooter({ socket, roomId }) {
   const [message, setMessage] = useState("");
+  const [isButtonEnabled, setIsButtonEnabled] = useState(true);
 
   const handleTyping = () => {};
 
@@ -16,6 +17,13 @@ export default function ChatFooter({ socket, roomId }) {
     e.preventDefault();
     if (message.trim() && socket !== null) {
       socket.emit("send message", { roomid: roomId, message: message });
+      setIsButtonEnabled(false);
+    }
+
+    if (socket !== null) {
+      socket.on("messageResponse", (data) => {
+        setIsButtonEnabled(true);
+      });
     }
     setMessage("");
   };
@@ -30,7 +38,9 @@ export default function ChatFooter({ socket, roomId }) {
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleTyping}
         />
-        <button className={styles["sendBtn"]}>SEND</button>
+        <button className={styles["sendBtn"]} disabled={!isButtonEnabled}>
+          SEND
+        </button>
       </form>
     </div>
   );

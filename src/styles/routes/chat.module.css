@@ -5,6 +5,13 @@
   justify-content: space-between;
 }
 
+.chat-title {
+  padding: 0;
+  margin: 0;
+  font-weight: 400;
+  border-bottom: 1px solid white;
+}
+
 .chat-body {
   display: flex;
   flex-direction: column;
@@ -56,10 +63,13 @@
 
 .chat-date {
   font-weight: 600;
+  font-size: small;
 }
 
 .chat-message-content {
   font-weight: 100;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
 .offline-circle,
@@ -104,4 +114,8 @@
 }
 .sendBtn:hover {
   background-color: rgb(129, 201, 129);
+}
+.sendBtn:disabled {
+  background-color: #14532d;
+  color: #64748b;
 }

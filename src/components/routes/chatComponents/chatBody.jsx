@@ -13,6 +13,7 @@ ChatMessage.propTypes = {
 
 ChatBody.propTypes = {
   socket: PropTypes.object,
+  roomName: PropTypes.string,
 };
 
 function ChatMessage({ message, isLast }) {
@@ -67,7 +68,7 @@ function ChatMessage({ message, isLast }) {
   );
 }
 
-export default function ChatBody({ socket }) {
+export default function ChatBody({ socket, roomName }) {
   const lastMessageRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -104,6 +105,7 @@ export default function ChatBody({ socket }) {
 
   return (
     <div className={styles["chat-body"]}>
+      <h1 className={styles["chat-title"]}>{roomName}</h1>
       {messages.length > 0 ? (
         messages.map((message, index) => {
           const isLast = index === messages.length - 1;
